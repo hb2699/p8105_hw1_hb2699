@@ -1,0 +1,64 @@
+---
+title: "p8105_hw1_hb2699"
+author: "Han Bao"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+```
+```{r}
+data("penguins", package = "palmerpenguins")
+```
+# `r "1. About the dataset"`
+#### `r "variables description"`
+The variables in the dataset include: Species, island, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, sex, year
+
+#### `r "Size of the dataset"`
+ncol = 8 nrow = 344 size = 2752
+
+#### `r "mean flipper length"`
+```{r}
+m = mean(unlist(penguins$flipper_length_mm), na.rm=TRUE)
+m
+#m is the mean of flipper length of penguins in mm.
+```
+The mean value of flipper length of penguins in is 200.9152.
+
+#### `r "Scatter Plot"`
+```{r yx_scatter}
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
+ggsave("myplot.pdf")
+```
+# `r "2. The data frame"`
+```{r}
+set.seed(1234)
+Gen <- factor(c("Male","Male","Female","Female","Female","Male","Others","Male","Female","Male"))
+df = tibble(
+  x = rnorm(10),
+  flag = x > 0,
+  Chr = vector(mode="character", length=10),
+  Gen
+)
+df
+#x is the random variable. flag represents whether x larger than 0 or not. chr is a character vector of length 10. Gen is a factor variable including three levels: Male, Female, and others.
+```
+#### `r "Trying to take means"`
+```{r}
+mean(pull(df, x))
+mean(pull(df, flag))
+mean(pull(df, Chr))
+mean(pull(df, Gen))
+```
+We can see that x and flag is available for taking average while Chr and Gen are not.
+
+#### `r "Trying to convert to numericle variables"`
+```{r}
+as.numeric(pull(df, flag))
+as.numeric(pull(df, Chr))
+as.numeric(pull(df, Gen))
+```
+We can transfer the logical and factor vector while not character vector. The partly explains the results from the last question. But we still don't know why it can't take the mean of the factor vector like the logical vector did. 
